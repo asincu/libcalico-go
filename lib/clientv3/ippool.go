@@ -54,10 +54,13 @@ func (r ipPools) Create(ctx context.Context, res *apiv3.IPPool, opts options.Set
 		resCopy := *res
 		res = &resCopy
 	}
+
+	fmt.Println("[ALINA] Before defaults for VXLANMODE: ", res.Spec.VXLANMode)
 	// Validate the IPPool before creating the resource.
 	if err := r.validateAndSetDefaults(ctx, res, nil); err != nil {
 		return nil, err
 	}
+	fmt.Println("[ALINA] After defaults for VXLANMODE: ", res.Spec.VXLANMode)
 
 	if err := validator.Validate(res); err != nil {
 		return nil, err
@@ -129,6 +132,7 @@ func (r ipPools) Update(ctx context.Context, res *apiv3.IPPool, opts options.Set
 		resCopy := *res
 		res = &resCopy
 	}
+	fmt.Println("[ALINA][UPDATE] Before validating VXLANMODE is set to %s", res.Spec.VXLANMode)
 	if err := validator.Validate(res); err != nil {
 		return nil, err
 	}
@@ -427,7 +431,9 @@ func (r ipPools) validateAndSetDefaults(ctx context.Context, new, old *apiv3.IPP
 
 	// Make sure VXLANMode is defaulted to "Never".
 	if len(new.Spec.VXLANMode) == 0 {
+		fmt.Println("[ALINA] Setting VXLANMode to ", apiv3.VXLANModeNever)
 		new.Spec.VXLANMode = apiv3.VXLANModeNever
+		fmt.Println("[ALINA] VXLANMode is", new.Spec.VXLANMode)
 	}
 
 	// Make sure only one of VXLAN and IPIP is enabled.
@@ -492,6 +498,8 @@ func (r ipPools) validateAndSetDefaults(ctx context.Context, new, old *apiv3.IPP
 			ErroredFields: errFields,
 		}
 	}
+
+	fmt.Println("[ALINA] VXLANMode was set to ", new.Spec.VXLANMode)
 
 	return nil
 }

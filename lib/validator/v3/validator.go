@@ -686,9 +686,9 @@ func validateIPPoolSpec(structLevel validator.StructLevel) {
 
 	// VXLAN cannot be enabled for IPv6.
 	if cidr.Version() == 6 && pool.VXLANMode != api.VXLANModeNever {
-		fmt.Println("[ALINA] does not like debug logging")
+		log.Warn("[ALINA] does not like debug logging")
 		structLevel.ReportError(reflect.ValueOf(pool.VXLANMode),
-			"IPpool.VXLANMode", "", reason("VXLANMode other than 'Never' is not supported on an IPv6 IP pool"), "")
+			"IPpool.VXLANMode", "", reason("[ALINA] VXLANMode other than 'Never' is not supported on an IPv6 IP pool"), "")
 	}
 
 	// Cannot have both VXLAN and IPIP on the same IP pool.

@@ -45,7 +45,7 @@ type IPPoolSpec struct {
 
 	// Contains configuration for VXLAN tunneling for this pool. If not specified,
 	// then this is defaulted to "Never" (i.e. VXLAN tunelling is disabled).
-	VXLANMode VXLANMode `json:"vxlanMode,omitempty" validate:"omitempty,vxlanMode"`
+	VXLANMode VXLANMode `json:"vxlanMode,omitempty" validate:"omitempty,vxlanMode" default:"ABC"`
 
 	// Contains configuration for IPIP tunneling for this pool. If not specified,
 	// then this is defaulted to "Never" (i.e. IPIP tunelling is disabled).
